@@ -1,13 +1,13 @@
 import math
 from copy import deepcopy
 import tkinter
-from tkinter.messagebox import showinfo
 
 size = 4
 ye_flag = True
 
 
-def set_size_func4():
+def set_size_func4():     #   ..... set_size_funcs define size of sudoku
+
     global size
     size = 4
     # print(size)
@@ -58,38 +58,26 @@ def find_box(i, j):  # ..... checking **box** for find answer
     block = [i // sqrt_num * sqrt_num, j // sqrt_num * sqrt_num]
     for k in range(block[0], block[0] + sqrt_num):
         for h in range(block[1], block[1] + sqrt_num):
-            # if k == i and h == j:
-            #     continue
-            # if sudoku[k][h] != 0:
-            #     if sudoku[k][h] in may_be_ans[i][j]:
-            #         may_be_ans[i][j][sudoku[k][h] - 1] = 0
             if sudoku[k][h] == sudoku[i][j] and k != i and h != j:
                 return False
     return True
 
 
-def find_row(i, j):
-    # for k in range(num_of_row_col):  # ..... checking **row** for find answer
-    #     if k == j:
-    #         continue
-    #     if sudoku[i][k] != 0:
-    #         if sudoku[i][k] in may_be_ans[i][j]:
-    #             may_be_ans[i][j][sudoku[i][k] - 1] = 0
-    #             # may_be_ans[i][j][may_be_ans[i][j].index(sudoku[i][k])] = 0
+def find_row(i, j):     # ..... checking **row** for find answer
     for k in range(num_of_row_col):
         if sudoku[i][k] == sudoku[i][j] and k != j:
             return False
     return True
 
 
-def find_column(i, j):
+def find_column(i, j):     # ..... checking **column** for find answer
     for k in range(num_of_row_col):
         if sudoku[k][j] == sudoku[i][j] and k != i:
             return False
     return True
 
 
-def find_empty():
+def find_empty():      # ..... find empty cell
     for i in range(num_of_row_col):
         for j in range(num_of_row_col):
             if sudoku[i][j] == 0:
@@ -97,7 +85,7 @@ def find_empty():
     return False
 
 
-def back_track():
+def back_track():   # .....use backtrack algorithm
     empty = find_empty()
     if not find_empty():
         return True
@@ -112,8 +100,7 @@ def back_track():
     return False
 
 
-def check_answer():
-    # .....checking possible answer
+def check_answer():  # .....checking possible answer
     global sudoku
     global may_be_ans
     while True:
@@ -127,18 +114,15 @@ def check_answer():
                         if sudoku[i][k] != 0:
                             if sudoku[i][k] in may_be_ans[i][j]:
                                 may_be_ans[i][j][sudoku[i][k] - 1] = 0
-                                # may_be_ans[i][j][may_be_ans[i][j].index(sudoku[i][k])] = 0
-
                     for k in range(num_of_row_col):  # ..... checking **column** for find answer
                         if k == i:
                             continue
                         if sudoku[k][j] != 0:
                             if sudoku[k][j] in may_be_ans[i][j]:
                                 may_be_ans[i][j][sudoku[k][j] - 1] = 0
-
                     sqrt_num = int(math.sqrt(num_of_row_col))
                     block = [i // sqrt_num * sqrt_num, j // sqrt_num * sqrt_num]
-                    for k in range(block[0], block[0] + sqrt_num):
+                    for k in range(block[0], block[0] + sqrt_num):    # ..... checking **box** for find answer
                         for h in range(block[1], block[1] + sqrt_num):
                             if k == i and h == j:
                                 continue
@@ -152,7 +136,7 @@ def check_answer():
                     else:
                         a = may_be_ans[i][j][h]
                 if flag == num_of_row_col - 1:
-                    sudoku[i][j] = a
+                    sudoku[i][j] = a       # ..... set answer of the cell
         done = True
         for i in range(num_of_row_col):
             if sudoku[i].count(0) > 0:
@@ -180,7 +164,6 @@ def solve_sudoku_func():
     may_be_ans = [[0] * num_of_row_col for _ in range(num_of_row_col)]
     for i in range(num_of_row_col):
         for j in range(num_of_row_col):
-            # for k in range(num_of_row_col):
             may_be_ans[i][j] = list(x for x in range(1, num_of_row_col + 1))
     check_answer()
     back_track()
@@ -192,10 +175,8 @@ def solve_sudoku_func():
 
 def build_func():
     global ye_flag, frm, size
-    pad_flag_x = False
-    pad_flag_y = False
 
-    pad_size = 4
+    pad_size = 4     # ..... The amount of padding
     if size == 4:
         pad_size = 175
     elif size == 9:
@@ -203,7 +184,7 @@ def build_func():
     elif size == 16:
         pad_size = 1
 
-    if ye_flag and size in [4, 9, 16]:
+    if ye_flag:
         ye_flag = False
         frm = tkinter.Frame(main, bg='#8e9aaf')
         frm.grid(row=1, column=0, padx=5, pady=pad_size)
@@ -224,8 +205,8 @@ def build_func():
                 else:
                     pad_flag_y = 0
                 ents[i][j].grid(row=i, column=j, pady=(0, pad_flag_x), padx=(0, pad_flag_y), ipady=7)
-    elif ye_flag:
-        showinfo('ALERT!!!!', 'I told you type 4, 9 or 16')
+    # elif ye_flag:
+    #     showinfo('ALERT!!!!', 'I told you type 4, 9 or 16')
 
 
 def destroy_function():
@@ -244,12 +225,9 @@ def destroy_function():
 
 
 main = tkinter.Tk()
-# main.config(bg='#feeafa')
 main.config()
-# background_image = tkinter.Image.open('C:\\Users\\z9776\\PycharmProjects\\Sudoku\\bg.gif')
 background_image = tkinter.PhotoImage(file='C:\\Users\\z9776\\PycharmProjects\\Sudoku\\bg2.gif')
 background_label = tkinter.Label(main, image=background_image, height=0, width=0)
-# background_label.grid(row=1, column=0)
 background_label.place(x=0, y=0)
 main.grid_columnconfigure(0, weight=1)
 
@@ -277,28 +255,6 @@ solve_btn = tkinter.Button(button_frame, text='solve', bg='#feeafa', command=sol
                            cursor='arrow', relief=tkinter.GROOVE, state=tkinter.DISABLED)
 solve_btn.pack(side=tkinter.RIGHT)
 
-
-
 main.geometry('600x600')
 main.resizable(0, 0)
 main.mainloop()
-
-# .....create sudoku
-
-# sudoku = [
-#     [0, 0, 3, 5, 0, 9, 0, 0, 0],
-#     [6, 0, 0, 1, 0, 4, 0, 0, 8],
-#     [0, 2, 9, 0, 0, 0, 0, 5, 4],
-#     [0, 9, 6, 0, 7, 0, 0, 0, 0],
-#     [0, 0, 0, 6, 5, 8, 0, 0, 0],
-#     [0, 0, 0, 0, 9, 0, 1, 6, 0],
-#     [3, 6, 0, 0, 0, 0, 9, 4, 0],
-#     [9, 0, 0, 3, 0, 2, 0, 0, 7],
-#     [0, 0, 0, 9, 0, 7, 5, 0, 0]
-# ]
-# sudoku = [
-#     [1, 0, 0, 0],
-#     [0, 0, 0, 4],
-#     [0, 0, 0, 0],
-#     [0, 3, 0, 0]
-# ]
