@@ -226,7 +226,7 @@ def destroy_function():
 
 main = tkinter.Tk()
 main.config()
-background_image = tkinter.PhotoImage(file='C:\\Users\\z9776\\PycharmProjects\\Sudoku\\bg2.gif')
+background_image = tkinter.PhotoImage(file='./bg2.gif')
 background_label = tkinter.Label(main, image=background_image, height=0, width=0)
 background_label.place(x=0, y=0)
 main.grid_columnconfigure(0, weight=1)
